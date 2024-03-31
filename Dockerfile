@@ -12,8 +12,8 @@ ENV LANG en_US.utf8
 
 # 깃 설정 값
 
-RUN git config --global user.name git-username
-RUN git config --global user.email git-useremail
+RUN git config --global user.name git-user
+RUN git config --global user.email git-email
 
 RUN git init
 RUN git remote add origin https://github.com/rkdalsdl98/classting-homwork.git
@@ -21,9 +21,7 @@ RUN git clone https://github.com/rkdalsdl98/classting-homwork.git
 
 # 서버 환경 변수
 
-ENV DATABASE_URL="postgresql://postgres:rkdalsdl112@localhost:5432/classting?schema=public"
-
-
+ENV DATABASE_URL="postgresql://postgres:passoword@localhost:5432/classting?schema=public"
 
 # 컨테이너 로드 중 실행 될 기타 명령어
 
