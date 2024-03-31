@@ -58,7 +58,6 @@ export default class SchoolService implements OnApplicationShutdown {
      */
     public async lookUpSchools() : Promise<SchoolDto[]> {
         return await this.repository.lookUpSchools()
-        .then(entities => entities.map(this._schoolEntityToDto))
     }
 
     /**
@@ -177,6 +176,7 @@ export default class SchoolService implements OnApplicationShutdown {
         return {
             name: entity.name,
             region: entity.region,
+            news: entity.news.map(this._newsEntityToDto),
         }
     }
 
@@ -193,7 +193,7 @@ export default class SchoolService implements OnApplicationShutdown {
         return {
             contents: entity.contents,
             views: entity.views,
-            updatedAt: entity.updatedAt,
+            updatedAt: new Date(entity.updatedAt),
         }
     }
 

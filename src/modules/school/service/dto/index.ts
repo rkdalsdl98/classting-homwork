@@ -3,6 +3,7 @@ import { tags } from "typia"
 export interface SchoolDto {
     region: string & tags.MaxLength<10>
     name: string & tags.MaxLength<20>
+    news: NewsDto[]
 }
 
 export interface NewsDto {

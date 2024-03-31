@@ -26,7 +26,7 @@ export namespace SchoolProvider {
             uuid: obj.uuid.trim(),
             region: obj.region.trim(),
             name: obj.name.trim(),
-            news: obj.news === undefined ? [] : obj.news.map(NewsProvider.Entity.toJson),
+            news: obj.news.map(NewsProvider.Entity.toJson),
         } satisfies SchoolEntity)
 
         export const select = () => Prisma.validator<Prisma.schoolFindManyArgs>()({
@@ -37,7 +37,13 @@ export namespace SchoolProvider {
             tx?: Omit<PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use" | "$extends">
         ) : Promise<SchoolEntity[]> => await (tx ?? PrismaService.prisma)
         .school
-        .findMany()
+        .findMany({
+            include: { 
+                news: {
+                    include: { detail: true }
+                } 
+            }
+        })
         .then(entities => entities.map(toJson))
         .catch(Exception.handle)
 
