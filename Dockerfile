@@ -21,7 +21,7 @@ RUN git clone https://github.com/rkdalsdl98/classting-homwork.git
 
 # 서버 환경 변수
 
-ENV DATABASE_URL="postgresql://postgres:rkdalsdl112@localhost:5432/classting?schema=public"
+ENV DATABASE_URL="postgresql://postgres:{password}@localhost:5432/classting?schema=public"
 
 
 
