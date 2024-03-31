@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["windows", "darwin", "debian-openssl-1.1.x"] // 윈도우, 맥, 우분투 20.04
+  previewFeatures = ["referentialActions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model school {
+  uuid String @id @db.Char(32) @default(cuid())
+  name String @unique @db.Char(20)
+  region String @db.Char(10)
+  news news[] @relation("News")
+}
+
+model news {
+  uuid String @id @db.Char(32) @default(cuid())
+  title String @db.Char(50)
+  school school @relation("News", references: [uuid], fields: [schoolId], onDelete: Cascade, onUpdate: Cascade)
+  schoolId String @db.Char(32)
+  detail newsdetail? @relation("NewsDetail")
+  feed newsfeed? @relation("NewsFeed")
+  createdAt DateTime @default(now())
+}
+
+model newsdetail {
+  uuid String @id @db.Char(32) @default(cuid())
+  contents String @db.Text @default("")
+  views Int @db.Integer @default(1)
+  news news @relation("NewsDetail", references: [uuid], fields: [newsId], onDelete: Cascade, onUpdate: Cascade)
+  newsId String @unique @db.Char(32)
+  updatedAt DateTime @updatedAt @default(now())
+}
+
+model user {
+  uuid String @id @db.Char(32) @default(cuid())
+  email String @unique @db.Text
+  pass String
+  salt String
+  authority Int @db.Integer @default(1)
+  subschool String[] @default([])
+}
+
+model newsfeed {
+  uuid String @id @db.Char(32) @default(cuid())
+  email String @db.Text
+  schoolname String
+  news news @relation("NewsFeed", references: [uuid], fields: [newsId], onDelete: Cascade, onUpdate: Cascade)
+  newsId String @unique @db.Char(32)
+
+  @@index([uuid, email])
+}
