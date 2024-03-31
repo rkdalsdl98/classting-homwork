@@ -1,7 +1,7 @@
 FROM postgres:16
 
-ENV	POSTGRES_USER=db-username
-ENV POSTGRES_PASSWORD=db-password
+ENV	POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
 
 RUN apt-get update; \
 		apt-get install -y apt-utils curl locales tzdata;

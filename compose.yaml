@@ -7,9 +7,9 @@ services:
     ports:
       - 5432:5432
     networks:
-      - testnet
+      - servernet
   server:
-    container_name: sirenorder-server
+    container_name: classting-server
     build: ./
     ports:
       - 80:80
@@ -17,15 +17,19 @@ services:
     # DB 컨테이너가 완전히 로드되기 이전에 명령어가 실행되면
     # DB 동기화와 시드데이터를 넣을 수 없으므로 일정 시간 멈춤
     # 맨 마지막 구문은 없는 파읽을 읽게해 강제로 컨테이너가 종료되지 않게 함
+
+    # 도커 컴포즈 실행과 동시에 서버가 켜지시길 원하신 다면
+    # tail -f /dev/null 바로 윗 부분에 npm run start 를 넣어주세요.
     command: 
       - |
         sleep 5
         service redis-server start
+        npx prisma migrate deploy
         npx prisma db push
         npx prisma db seed
         tail -f /dev/null
     networks:
-      - testnet
+      - servernet
 networks:
   servernet:
     external: true
